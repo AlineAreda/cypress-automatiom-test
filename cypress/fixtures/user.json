@@ -1,0 +1,9 @@
+{
+  "user": {
+    "name": "Teste Cadastro",
+    "email": "cadastro@e2eburguer.com.br",
+    "password": "Teste@123!",
+    "confirmPassword": "Teste@123!",
+    "isGestao": true
+  }
+}
