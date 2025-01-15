@@ -32,21 +32,17 @@ class SignUpPage {
     cy.get(this.loginButton).click();
   }
 
-  verifyMsgError(expectedMessage, index = 0) {
-    cy.get('[class^="signup_inputWrapper"]') // Seleciona o contêiner de entrada
-      .eq(index) // Seleciona o índice específico do campo
-      .parent() // Navega para o contêiner pai
-      .find('[class^="signup_errorText"]') // Encontra o elemento da mensagem de erro
-      .should("be.visible") // Verifica se está visível
-      .and("contain.text", expectedMessage) // Verifica se contém o texto esperado
-      .and("have.css", "color", "rgb(255, 0, 0)"); // Verifica se a cor é vermelha
+  verifyErrorMessage(expectedMessage) {
+    cy.contains("p.signup_errorText__VbQDD", expectedMessage)
+      .should("be.visible")
+      .and("have.css", "color", "rgb(230, 57, 70)");
   }
 
-  verifyCheckboxError(expectedMessage) {
-    cy.get('[class^="signup_checkboxErrorText"]')
+
+  verifyToastMsg(expectedMessage) {
+    cy.get(".Toastify__toast-body")
       .should("be.visible")
-      .and("contain.text", expectedMessage)
-      .and("have.css", "color", "rgb(255, 0, 0)");
+      .and("have.text", expectedMessage);
   }
 }
 

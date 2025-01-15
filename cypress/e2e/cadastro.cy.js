@@ -10,21 +10,17 @@ describe("Cadastro de usuário", () => {
     signUpPage.checkPage();
   });
 
-  it.only("Deve cadastrar usuário perfil gestão com sucesso", () => {
+  it("Deve cadastrar usuário perfil gestão com sucesso", () => {
     const user = userData.user;
     const loginUser = loginData.perfilGestao;
 
     // Interceptar o cadastro e capturar o ID
     cy.intercept("POST", `${Cypress.env("baseApi")}/user`).as("postUsuario");
-    
 
-    // Preencher o formulário e submeter
     signUpPage.fillForm(user);
     signUpPage.selectProfile(user.isGestao);
     signUpPage.submitSignup();
-    cy.verifyMsgToast("Cadastro realizado com sucesso!");
-
-    cy.wait('@postUsuario', { timeout: 10000 });
+    signUpPage.verifyToastMsg("Cadastro realizado com sucesso!");
 
     // Capturar o ID do usuário cadastrado
     cy.captureUserId();
@@ -36,84 +32,58 @@ describe("Cadastro de usuário", () => {
   });
 
   it("Não deve permitir cadastro quando e-mail já cadastrado", () => {
-    const user = { ...userData.user, email: "aline.areda@email.com" }; // Sobrescrevendo o email para ser inválido
+    const user = userData.duplicateEmail;
     signUpPage.fillForm(user);
-    signUpPage.selectRadio("Sim");
-    signUpPage.aceptTerms();
+    signUpPage.selectProfile(user.isGestao);
     signUpPage.submitSignup();
 
-    signUpPage.verifyErrorToast("E-mail já cadastrado.");
+    signUpPage.verifyToastMsg("E-mail já cadastrado. Tente usar outro e-mail.");
   });
 
   it("Não deve permitir cadastro quando e-mail inválido", () => {
-    const user = { ...userData.user, email: "emailinvalido" }; // Sobrescrevendo o email para ser inválido
-    signUpPage.fillForm(user);
-    signUpPage.selectRadio("Sim");
-    signUpPage.aceptTerms();
-    signUpPage.submitSignup();
+    const user = { ...userData.user, email: "emailinvalido.com.br" };
 
-    signUpPage.verifyAlertToast(
-      "Preencha todos os campos corretamente antes de prosseguir."
-    );
-    signUpPage.verifyMsgError(
-      "O campo de e-mail é obrigatório e deve estar em um formato válido.",
-      1
-    );
+    signUpPage.fillForm(user);
+    signUpPage.selectProfile(user.isGestao);
+    signUpPage.submitSignup();
+    signUpPage.verifyErrorMessage("Por favor, insira um e-mail válido.");
   });
 
-  it("Não deve permitir cadastro quando CPF inválido", () => {
-    const user = { ...userData.user, cpf: "123456789" }; // CPF inválido
+  it("Não deve permitir cadastro quando senha inválida", () => {
+    const user = { ...userData.user, password: "senha@123" };
 
     signUpPage.fillForm(user);
-    signUpPage.selectRadio("Sim");
-    signUpPage.aceptTerms();
+    signUpPage.selectProfile(user.isGestao);
     signUpPage.submitSignup();
-
-    signUpPage.verifyMsgError("O CPF informado é inválido.", 3);
+    signUpPage.verifyErrorMessage(
+      "A senha deve conter entre 8 e 12 caracteres, incluindo ao menos uma letra maiúscula, um número e um caractere especial."
+    );
   });
 
   it("Não deve permitir cadastro quando senha e confirmação de senha diferentes", () => {
     const user = { ...userData.user, confirmPassword: "SenhaDiferente@123" };
 
     signUpPage.fillForm(user);
-    signUpPage.selectRadio("Sim");
-    signUpPage.aceptTerms();
+    signUpPage.selectProfile(user.isGestao);
     signUpPage.submitSignup();
-
-    signUpPage.verifyAlertToast(
-      "Preencha todos os campos corretamente antes de prosseguir."
-    );
-    signUpPage.verifyMsgError("As senhas não coincidem.", 4);
+    signUpPage.verifyErrorMessage("As senhas não coincidem.");
   });
 
-  it("Não deve permitir cadastro sem aceitar os termos", () => {
-    const user = { ...userData.user };
+  it("Nome deve ser completo no cadastro", () => {
+    const user = { ...userData.user, name: "Teste" };
 
     signUpPage.fillForm(user);
-    signUpPage.selectRadio("Sim");
+    signUpPage.selectProfile(user.isGestao);
     signUpPage.submitSignup();
-
-    signUpPage.verifyCheckboxError(
-      "Você deve aceitar os termos para prosseguir."
-    );
+    signUpPage.verifyErrorMessage("Preencha com nome e sobrenome.");
   });
 
-  it("verificar mensagens para campos obrigatórios", () => {
+  it("Não deve permitir cadastro quando campos em branco", () => {
     signUpPage.submitSignup();
-
-    signUpPage.verifyMsgError(
-      "O campo de nome é obrigatório e deve conter nome e sobrenome.",
-      0 // Índice da mensagem correspondente
-    );
-    signUpPage.verifyMsgError(
-      "O campo de e-mail é obrigatório e deve estar em um formato válido.",
-      1
-    );
-    signUpPage.verifyMsgError("O campo de WhatsApp é obrigatório.", 2);
-    signUpPage.verifyMsgError("O campo de CPF é obrigatório.", 3);
-    signUpPage.verifyMsgError(
-      "A senha deve conter entre 6 e 15 caracteres, incluindo ao menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial.",
-      4
-    );
+    signUpPage.verifyErrorMessage("O campo de nome é obrigatório.");
+    signUpPage.verifyErrorMessage("O campo de e-mail é obrigatório.");
+    signUpPage.verifyErrorMessage("O campo de senha é obrigatório.");
+    signUpPage.verifyErrorMessage("Confirme sua senha.");
+    signUpPage.verifyErrorMessage("Por favor, selecione o perfil.");
   });
 });

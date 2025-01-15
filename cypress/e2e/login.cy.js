@@ -19,14 +19,14 @@ describe("Login", () => {
     const user = { ...loginData.perfilGestao, password: "Teste@123" };
 
     homePage.doLogin(user.email, user.password);
-    cy.verifyMsgToast("Credenciais inválidas. Verifique seu e-mail e senha.");
+    homePage.verifyToastMsg("Credenciais inválidas. Verifique seu e-mail e senha.");
   });
 
   it("Não deve logar quando email inválido", () => {
     const user = { ...loginData.perfilGestao, email: "email@gmail.com" };
 
     homePage.doLogin(user.email, user.password);
-    cy.verifyMsgToast("Credenciais inválidas. Verifique seu e-mail e senha.");
+    homePage.verifyToastMsg("Credenciais inválidas. Verifique seu e-mail e senha.");
   });
 
   it("Não deve logar sem preencher credenciais", () => {
@@ -46,7 +46,7 @@ describe("Login", () => {
     const user = loginData.perfilSalao;
 
     homePage.doLogin(user.email, user.password);
-    cy.verifyMsgToast("Acesse através do app.");
+    homePage.verifyToastMsg("Acesse através do app.");
     cy.verifyPage("app-info", "Acesso pelo APP E2E Burguer");
   });
 });

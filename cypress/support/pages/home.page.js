@@ -42,6 +42,13 @@ class HomePage {
     this.submitLogin();
   }
 
+  
+  verifyToastMsg(expectedMessage) {
+    cy.get(".Toastify__toast-body")
+      .should("be.visible")
+      .and("have.text", expectedMessage);
+  }
+
   verifyMsgError(expectedMessage) {
     cy.get('[class^="home_errorText"]')
       .should("be.visible")

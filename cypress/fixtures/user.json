@@ -5,5 +5,12 @@
     "password": "Teste@123!",
     "confirmPassword": "Teste@123!",
     "isGestao": true
+  },
+  "duplicateEmail": {
+    "name": "Teste QA",
+    "email": "teste.qa@gmail.com",
+    "password": "Teste@123!",
+    "confirmPassword": "Teste@123!",
+    "isGestao": true
   }
 }
