@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       spec:
-        description: Run by cypress command line
+        description: Run specific tests by spec
         default: cypress/e2e/*        
 
 jobs:
@@ -17,17 +17,10 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
 
-      - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Verify Cypress installation
-        run: |
-          yarn list cypress
-          npx cypress verify
-
       - name: Cypress run
         uses: cypress-io/github-action@v6.5.0
         with:    
+          install-command: yarn install --immutable
           browser: electron
           record: true
           group: UI Electron
