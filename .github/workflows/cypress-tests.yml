@@ -12,10 +12,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 22.4.0 
+          node-version: 22.4.0 # Usa Node.js na versão correta para o projeto
+          cache: 'yarn'
 
-      - name: Install Yarn
-        run: npm install -g yarn@4.6.0
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Activate Yarn 4.6.0
+        run: corepack prepare yarn@4.6.0 --activate
 
       - name: Verify Yarn version
         run: yarn --version
