@@ -2,7 +2,8 @@ require('dotenv').config(); // Carrega variáveis de ambiente do arquivo .env
 
 module.exports = {
   env: {
-    baseApi: process.env.API_URL, // Define a URL da API a partir do .env
+    baseApi: process.env.API_URL,
+    projectId: 'zyti4h',
   },
   e2e: {
     setupNodeEvents(on, config) {
