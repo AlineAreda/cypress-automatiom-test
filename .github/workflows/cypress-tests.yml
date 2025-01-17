@@ -9,23 +9,14 @@ jobs:
       - name: Get code
         uses: actions/checkout@v4.2.2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 22.4.0 # Usa Node.js na versão correta para o projeto
-          cache: 'yarn'
-
       - name: Enable Corepack
         run: corepack enable
 
-      - name: Activate Yarn 4.6.0
-        run: corepack prepare yarn@4.6.0 --activate
-
-      - name: Verify Yarn version
+      - name: Verify Yarn Version
         run: yarn --version
 
       - name: Install dependencies
         run: yarn install
 
-      - name: Run E2E tests
+      - name: Run E2E Tests
         run: yarn cypress:run
