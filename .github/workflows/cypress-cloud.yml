@@ -17,15 +17,17 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
 
-      - name: Verify Node.js and Yarn versions
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Verify Cypress installation
         run: |
-          node --version
-          yarn --version
+          yarn list cypress
+          npx cypress verify
 
       - name: Cypress run
         uses: cypress-io/github-action@v6.5.0
         with:    
-          install-commands: yarn install
           browser: electron
           record: true
           group: UI Electron
