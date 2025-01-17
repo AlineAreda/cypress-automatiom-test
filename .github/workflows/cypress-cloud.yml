@@ -20,7 +20,7 @@ jobs:
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6.5.0
         with:
-          install-command: yarn install
+          install-command: yarn install --immutable
           browser: electron
           record: true
           group: UI Electron
