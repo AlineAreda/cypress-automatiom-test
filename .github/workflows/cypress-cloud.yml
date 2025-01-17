@@ -17,13 +17,17 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
 
-      - name: Install dependencies
+      - name: Install dependencies and Cypress
         run: |
           yarn install --immutable
           npx cypress install
+          npx cypress verify
 
-      - name: Verify Cypress installation
-        run: npx cypress verify
+      - name: Clear Cypress cache (if needed)
+        run: npx cypress cache clear || true
+
+      - name: Verify Cypress cache
+        run: npx cypress cache list
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6.5.0
