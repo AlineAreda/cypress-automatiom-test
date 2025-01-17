@@ -20,7 +20,9 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6.5.0
         with:    
-          install-command: yarn install --immutable
+          install-command: |
+            yarn install --immutable &&
+            npx cypress verify || npx cypress install
           browser: electron
           record: true
           group: UI Electron
