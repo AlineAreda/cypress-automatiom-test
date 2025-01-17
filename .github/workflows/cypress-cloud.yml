@@ -18,21 +18,16 @@ jobs:
         run: corepack enable
 
       - name: Install dependencies
-        run: |
-          yarn install --immutable
-          npx cypress install --force
+        run: yarn install --immutable
+
+      - name: Install Cypress
+        run: npx cypress install --force
 
       - name: Verify Cypress installation
         run: npx cypress verify
 
       - name: Run Cypress tests
-        uses: cypress-io/github-action@v6.5.0
-        with:
-          install-command: echo "Dependencies already installed"
-          browser: electron
-          record: true
-          group: UI Electron
-          spec: ${{ github.event.inputs.spec }}
+        run: npx cypress run --browser electron --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --group "UI Electron" --spec ${{ github.event.inputs.spec }}
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
