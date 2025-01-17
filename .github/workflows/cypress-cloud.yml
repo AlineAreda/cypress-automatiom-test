@@ -13,18 +13,24 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v4.2.2
-        
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Verify Node.js and Yarn versions
+        run: |
+          node --version
+          yarn --version
+
       - name: Cypress run
         uses: cypress-io/github-action@v6.5.0
-        with:
-          enable_corepack: corepack enable        
+        with:    
           install-commands: yarn install
           browser: electron
-          recorde: true
+          record: true
           group: UI Electron
-          spec: ${{ github.event.inputs.specs }}
+          spec: ${{ github.event.inputs.spec }}
         env:
-          CYPRESS_RECORD_KEY: 04de66b8-3be9-4747-b976-8c709828384f
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
 
