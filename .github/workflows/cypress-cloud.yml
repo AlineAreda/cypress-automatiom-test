@@ -17,6 +17,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6.5.0
         with:
+          enable_corepack: corepack enable        
           install-commands: yarn install
           browser: electron
           recorde: true
