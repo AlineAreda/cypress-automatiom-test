@@ -13,13 +13,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.20.2 
-          cache: 'yarn'
 
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Prepare Yarn 4.6.0
-        run: corepack prepare yarn@4.6.0 --activate
+      - name: Enable Corepack and Prepare Yarn
+        run: |
+          corepack enable
+          corepack prepare yarn@4.6.0 --activate
 
       - name: Verify Yarn version
         run: yarn --version
