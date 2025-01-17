@@ -9,10 +9,21 @@ jobs:
       - name: Get code
         uses: actions/checkout@v4.2.2
 
-      - name: Install dependecies
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16 
+          cache: 'yarn'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Use specific Yarn version
+        run: corepack prepare yarn@4.6.0 --activate
+
+      - name: Install dependencies
         run: yarn install
 
       - name: Run E2E tests
         run: yarn cypress run
 
-    
