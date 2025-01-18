@@ -11,27 +11,21 @@ jobs:
   cypress-e2e-electron:
     runs-on: ubuntu-latest
     steps:
-      # Checkout do código
       - name: Checkout code
         uses: actions/checkout@v4.2.2
 
-      # Habilitar Corepack
       - name: Enable Corepack
         run: corepack enable
 
-      # Instalar dependências do projeto
       - name: Install dependencies
         run: yarn install --immutable
 
-      # Instalar o Cypress
       - name: Install Cypress
         run: npx cypress install --force
 
-      # Verificar instalação do Cypress
       - name: Verify Cypress installation
         run: npx cypress verify
 
-      # Executar os testes do Cypress
       - name: Run Cypress tests
         run: npx cypress run --browser electron --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --group "UI Electron" --spec ${{ github.event.inputs.spec }}
         env:
