@@ -9,7 +9,7 @@ on:
 
 jobs:
   cypress-electron-tests:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: Get code
         uses: actions/checkout@v4.2.2
@@ -21,7 +21,13 @@ jobs:
         run: yarn --version
 
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --immutable
+
+      - name: Install Cypress
+        run: yarn add cypress --dev
+
+      - name: Verify Cypress installation
+        run: yarn cypress verify
 
       - name: Run E2E Tests
         run: ${{ github.event.inputs.cli }}
