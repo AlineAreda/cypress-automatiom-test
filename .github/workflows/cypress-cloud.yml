@@ -30,4 +30,4 @@ jobs:
         run: npx cypress run --browser electron --record --key ${{ secrets.CYPRESS_RECORD_KEY }} --group "UI Electron" --spec ${{ github.event.inputs.spec }}
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB
+          GITHUB_TOKEN: ${{ secrets.GITHUB }}
