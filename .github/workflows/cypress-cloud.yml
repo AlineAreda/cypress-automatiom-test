@@ -5,7 +5,7 @@ on:
     inputs:
       spec:
         description: Run specific tests by spec
-        default: "cypress/e2e/*"
+        default: cypress/e2e/*        
 
 jobs:
   cypress-e2e-electron:
@@ -17,23 +17,15 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
 
-      - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Ensure dotenv is installed
-        run: yarn add dotenv
-
-      - name: Install Cypress
-        run: npx cypress install --force
-
-      - name: Verify Cypress installation
-        run: npx cypress verify
-
       - name: Run Cypress tests
-        run: |
-          npx cypress run --browser electron --record --key ${{ secrets.CYPRESS_RECORD_KEY }} \
-          --group "UI Electron" --spec "${{ github.event.inputs.spec }}"
+        uses: cypress-io/github-action@v6.5.0
+        with:
+          install-command: yarn install --immutable
+          verify: true
+          browser: electron
+          record: true
+          group: UI Electron
+          spec: ${{ github.event.inputs.spec }}
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
