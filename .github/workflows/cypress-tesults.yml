@@ -21,7 +21,15 @@ jobs:
         run: yarn --version
 
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --immutable
+        
+      - name: Install Cypress
+        run: npx cypress install --force
+
+     
+      - name: Verify Cypress installation
+        run: npx cypress verify
+
 
       - name: Run E2E Tests
         run: ${{ github.event.inputs.cli }}
