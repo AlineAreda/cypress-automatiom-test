@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
     inputs:
       cli:
-        description: Run by cypress node command 
-        default: node runner.js       
+        description: Run by cypress command line
+        default: node runner.js        
 
 jobs:
   cypress-electron-tests:
@@ -21,15 +21,7 @@ jobs:
         run: yarn --version
 
       - name: Install dependencies
-        run: yarn install --immutable
-        
-      - name: Install Cypress
-        run: npx cypress install --force
-
-     
-      - name: Verify Cypress installation
-        run: npx cypress verify
-
+        run: yarn install
 
       - name: Run E2E Tests
         run: ${{ github.event.inputs.cli }}
