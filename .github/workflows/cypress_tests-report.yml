@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       cli:
-        description: Run by Cypress command line
+        description: Run Cypress tests
         default: yarn cypress run        
 
 jobs:
@@ -23,26 +23,55 @@ jobs:
       - name: Verify Yarn Version
         run: yarn --version
 
+      - name: Setup Node.js Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            ~/.cache/yarn
+          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            node-modules-${{ runner.os }}-
+
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile --check-files
 
-      - name: Ensure Cypress Reporters are Installed
-        run: yarn add cypress-mochawesome-reporter cypress-multi-reporters mocha-junit-reporter --dev
+      - name: Set Cypress Cache Folder
+        run: echo "CYPRESS_CACHE_FOLDER=~/.cache/Cypress" >> $GITHUB_ENV
 
-      - name: Create Report Directory
-        run: mkdir -p cypress/reports/mochawesome cypress/reports/junit cypress/videos
+      - name: Restore Cypress Cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            cypress-${{ runner.os }}-
+
+      - name: Create Necessary Directories
+        run: mkdir -p cypress/reports/mochawesome cypress/reports/junit cypress/videos cypress/screenshots
 
       - name: Run E2E Tests on ${{ matrix.browser }}
         run: yarn cypress run --browser ${{ matrix.browser }}
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload Cypress Reports
+        uses: actions/upload-artifact@v4
         with:
           name: cypress-reports
           path: cypress/reports
           if-no-files-found: ignore
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload Cypress Videos
+        uses: actions/upload-artifact@v4
         with:
           name: cypress-videos
           path: cypress/videos
           if-no-files-found: ignore
+
+      - name: Upload Cypress Screenshots (if tests fail)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+          if-no-files-found: ignore
+
