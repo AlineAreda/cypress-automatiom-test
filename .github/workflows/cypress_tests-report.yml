@@ -1,3 +1,5 @@
+
+
 name: Cypress Tests Report
 
 on:
@@ -93,8 +95,7 @@ jobs:
       - name: Publish Reports to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GH_PAGES_TOKEN }}
+          personal_token: ${{ secrets.GH_PAGES_TOKEN }}
           publish_branch: gh-pages
           publish_dir: report
           force_orphan: true
-
