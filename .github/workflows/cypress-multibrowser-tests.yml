@@ -1,0 +1,30 @@
+name: Cypress Multibrowser Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      cli:
+        description: Run by Cypress command line
+        default: yarn cypress run        
+
+jobs:
+  cypress-multibrowser-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [electron, chrome, firefox]
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4.2.2
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Verify Yarn Version
+        run: yarn --version
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run E2E Tests on ${{ matrix.browser }}
+        run: yarn cypress run --browser ${{ matrix.browser }}
