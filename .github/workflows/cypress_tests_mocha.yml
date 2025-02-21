@@ -26,6 +26,9 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Install Mochawesome
+        run: yarn add mochawesome mochawesome-merge mochawesome-report-generator --dev
+
       - name: Create Report Directory
         run: mkdir -p cypress/reports
 
