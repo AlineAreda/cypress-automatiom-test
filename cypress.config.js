@@ -1,25 +1,22 @@
-require('dotenv').config(); // Carrega variáveis de ambiente do arquivo .env
+require('dotenv').config(); 
 
 module.exports = {
   env: {
     baseApi: process.env.API_URL,
-    projectId: 'zyti4h',
+    //projectId: process.env.PROJECT_ID, para reporte Tesults
   },
   e2e: {
     setupNodeEvents(on, config) {
-      // Implementação de eventos do Cypress (se necessário)
+      require('cypress-mochawesome-reporter/plugin')(on);
+      return config;
     },
-    baseUrl:  process.env.WEB_URL,
+    baseUrl: process.env.WEB_URL,
     viewportWidth: 1920,
     viewportHeight: 1080,
     video: true,
-    reporter: "mochawesome",
+    reporter: "cypress-multi-reporters",
     reporterOptions: {
-      reportDir: "cypress/reports",
-      overwrite: false,
-      html: true,
-      json: true,
-      charts: true,
+      configFile: "reporter-config.json"
     },
   },
 };
