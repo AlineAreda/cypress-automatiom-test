@@ -17,35 +17,11 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v4.2.2
 
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Verify Yarn Version
-        run: yarn --version
-
-      - name: Setup Node.js Cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.npm
-            ~/.cache/yarn
-          key: node-modules-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            node-modules-${{ runner.os }}-
+      - name: Configure Yarn para usar node-modules
+        run: echo "nodeLinker: node-modules" > .yarnrc.yml
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile --check-files
-
-      - name: Set Cypress Cache Folder
-        run: echo "CYPRESS_CACHE_FOLDER=~/.cache/Cypress" >> $GITHUB_ENV
-
-      - name: Restore Cypress Cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/Cypress
-          key: cypress-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            cypress-${{ runner.os }}-
+        run: yarn install --immutable
 
       - name: Create Necessary Directories
         run: mkdir -p cypress/reports/mochawesome cypress/reports/junit cypress/videos cypress/screenshots
@@ -74,4 +50,3 @@ jobs:
           name: cypress-screenshots
           path: cypress/screenshots
           if-no-files-found: ignore
-
