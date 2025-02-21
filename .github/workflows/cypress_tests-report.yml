@@ -58,13 +58,15 @@ jobs:
     runs-on: ubuntu-latest
     if: always()  
     steps:
-      - name: Checkout do repositório
+      - name: Checkout gh-pages branch
         uses: actions/checkout@v4.2.2
+        with:
+          ref: gh-pages
+          fetch-depth: 0
 
-      - name: Criar a branch gh-pages caso não exista e fazer checkout
+      - name: Criar a branch gh-pages caso não exista
         run: |
-          git fetch origin gh-pages || echo "Branch gh-pages não encontrada, criando uma nova."
-          git checkout gh-pages 2>/dev/null || git checkout --orphan gh-pages
+          git fetch origin gh-pages || git checkout --orphan gh-pages
           git reset --hard
           git clean -fdx
           git commit --allow-empty -m "Inicializando gh-pages" || echo "Branch já inicializada."
@@ -85,6 +87,13 @@ jobs:
         with:
           name: cypress-reports-firefox-${{ github.run_id }}
           path: report/firefox
+
+      - name: Ajustar estrutura dos relatórios para o GitHub Pages
+        run: |
+          mv report/chrome/html/* report/chrome/
+          mv report/electron/html/* report/electron/
+          mv report/firefox/html/* report/firefox/
+          rm -rf report/chrome/html report/electron/html report/firefox/html
 
       - name: Criar um arquivo index.html para redirecionamento
         run: |
