@@ -17,8 +17,10 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v4.2.2
 
-      - name: Configure Yarn para usar node-modules
-        run: echo "nodeLinker: node-modules" > .yarnrc.yml
+      - name: Setup Corepack & Use Correct Yarn Version
+        run: |
+          corepack enable
+          corepack prepare yarn@4.6.0 --activate
 
       - name: Install dependencies
         run: yarn install --immutable
