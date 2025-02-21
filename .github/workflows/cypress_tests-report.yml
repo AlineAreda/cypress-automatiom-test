@@ -58,17 +58,17 @@ jobs:
     runs-on: ubuntu-latest
     if: always()  
     steps:
-      - name: Checkout gh-pages branch
+      - name: Checkout do repositório
         uses: actions/checkout@v4.2.2
-        with:
-          ref: gh-pages
-          fetch-depth: 0
 
-      - name: Criar a branch gh-pages caso não exista
+      - name: Criar a branch gh-pages caso não exista e fazer checkout
         run: |
-          git fetch origin gh-pages || git checkout --orphan gh-pages
+          git fetch origin gh-pages || echo "Branch gh-pages não encontrada, criando uma nova."
+          git checkout gh-pages 2>/dev/null || git checkout --orphan gh-pages
           git reset --hard
           git clean -fdx
+          git commit --allow-empty -m "Inicializando gh-pages" || echo "Branch já inicializada."
+          git push origin gh-pages || echo "Branch já existe no remoto."
 
       - name: Download Cypress Reports
         uses: actions/download-artifact@v4
@@ -93,7 +93,7 @@ jobs:
       - name: Publish Reports to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          personal_token: ${{ secrets.GH_PAGES_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: report
           force_orphan: true
