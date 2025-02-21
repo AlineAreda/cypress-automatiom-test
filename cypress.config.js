@@ -1,4 +1,4 @@
-require('dotenv').config(); 
+require('dotenv').config(); // Carrega variáveis de ambiente do arquivo .env
 
 module.exports = {
   env: {
@@ -7,18 +7,19 @@ module.exports = {
   },
   e2e: {
     setupNodeEvents(on, config) {
-      // Eventos do Cypress (se necessário)
+      // Implementação de eventos do Cypress (se necessário)
     },
-    baseUrl: 'https://e2eburguer.netlify.app',
+    baseUrl:  process.env.WEB_URL,
     viewportWidth: 1920,
     viewportHeight: 1080,
     video: true,
-    reporter: 'mochawesome',
+    reporter: "mochawesome",
     reporterOptions: {
-      reportDir: 'cypress/reports',
+      reportDir: "cypress/reports",
       overwrite: false,
       html: true,
       json: true,
+      charts: true,
     },
   },
 };
