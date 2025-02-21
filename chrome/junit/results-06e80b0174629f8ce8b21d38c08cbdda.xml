@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="6.630" tests="6" failures="0">
+  <testsuite name="Root Suite" timestamp="2025-02-21T22:32:47" tests="0" file="cypress/e2e/login.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Login" timestamp="2025-02-21T22:32:47" tests="6" time="6.625" failures="0">
+    <testcase name="Login Deve realizar login com sucesso" time="1.652" classname="Deve realizar login com sucesso">
+    </testcase>
+    <testcase name="Login Não deve logar quando senha inválida" time="1.399" classname="Não deve logar quando senha inválida">
+    </testcase>
+    <testcase name="Login Não deve logar quando email inválido" time="1.136" classname="Não deve logar quando email inválido">
+    </testcase>
+    <testcase name="Login Não deve logar sem preencher credenciais" time="0.200" classname="Não deve logar sem preencher credenciais">
+    </testcase>
+    <testcase name="Login Verificar mensagem de erro quando formato de e-mail inválido" time="0.845" classname="Verificar mensagem de erro quando formato de e-mail inválido">
+    </testcase>
+    <testcase name="Login Quando perfil de usuário diferente de gestão direcionar para fluxo do app." time="1.248" classname="Quando perfil de usuário diferente de gestão direcionar para fluxo do app.">
+    </testcase>
+  </testsuite>
+</testsuites>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="11.212" tests="7" failures="0">
+  <testsuite name="Root Suite" timestamp="2025-02-21T22:32:38" tests="0" file="cypress/e2e/cadastro.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Cadastro de usuário" timestamp="2025-02-21T22:32:38" tests="7" time="11.191" failures="0">
+    <testcase name="Cadastro de usuário Deve cadastrar usuário perfil gestão com sucesso" time="2.578" classname="Deve cadastrar usuário perfil gestão com sucesso">
+    </testcase>
+    <testcase name="Cadastro de usuário Não deve permitir cadastro quando e-mail já cadastrado" time="1.737" classname="Não deve permitir cadastro quando e-mail já cadastrado">
+    </testcase>
+    <testcase name="Cadastro de usuário Não deve permitir cadastro quando e-mail inválido" time="1.563" classname="Não deve permitir cadastro quando e-mail inválido">
+    </testcase>
+    <testcase name="Cadastro de usuário Não deve permitir cadastro quando senha inválida" time="1.625" classname="Não deve permitir cadastro quando senha inválida">
+    </testcase>
+    <testcase name="Cadastro de usuário Não deve permitir cadastro quando senha e confirmação de senha diferentes" time="1.654" classname="Não deve permitir cadastro quando senha e confirmação de senha diferentes">
+    </testcase>
+    <testcase name="Cadastro de usuário Nome deve ser completo no cadastro" time="1.478" classname="Nome deve ser completo no cadastro">
+    </testcase>
+    <testcase name="Cadastro de usuário Não deve permitir cadastro quando campos em branco" time="0.392" classname="Não deve permitir cadastro quando campos em branco">
+    </testcase>
+  </testsuite>
+</testsuites>
