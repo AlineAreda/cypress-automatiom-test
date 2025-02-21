@@ -34,14 +34,14 @@ jobs:
       - name: Upload Cypress Reports
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-reports
+          name: cypress-reports-${{ matrix.browser }}
           path: cypress/reports
           if-no-files-found: ignore
 
       - name: Upload Cypress Videos
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-videos
+          name: cypress-videos-${{ matrix.browser }}
           path: cypress/videos
           if-no-files-found: ignore
 
@@ -49,6 +49,39 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-screenshots
+          name: cypress-screenshots-${{ matrix.browser }}
           path: cypress/screenshots
           if-no-files-found: ignore
+
+  deploy-report:
+    needs: cypress-multibrowser-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v4.2.2
+        with:
+          ref: gh-pages
+
+      - name: Download Cypress Reports
+        uses: actions/download-artifact@v4
+        with:
+          name: cypress-reports-electron
+          path: report/electron
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: cypress-reports-chrome
+          path: report/chrome
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: cypress-reports-firefox
+          path: report/firefox
+
+      - name: Publish Reports to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: report
+          force_orphan: true
