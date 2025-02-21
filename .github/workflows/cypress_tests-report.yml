@@ -34,14 +34,14 @@ jobs:
       - name: Upload Cypress Reports
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-reports-${{ matrix.browser }}
+          name: cypress-reports-${{ matrix.browser }}-${{ github.run_id }}
           path: cypress/reports
           if-no-files-found: ignore
 
       - name: Upload Cypress Videos
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-videos-${{ matrix.browser }}
+          name: cypress-videos-${{ matrix.browser }}-${{ github.run_id }}
           path: cypress/videos
           if-no-files-found: ignore
 
@@ -49,13 +49,14 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-screenshots-${{ matrix.browser }}
+          name: cypress-screenshots-${{ matrix.browser }}-${{ github.run_id }}
           path: cypress/screenshots
           if-no-files-found: ignore
 
   deploy-report:
     needs: cypress-multibrowser-tests
     runs-on: ubuntu-latest
+    if: always()  
     steps:
       - name: Checkout gh-pages branch
         uses: actions/checkout@v4.2.2
@@ -63,20 +64,26 @@ jobs:
           ref: gh-pages
           fetch-depth: 0
 
+      - name: Criar a branch gh-pages caso não exista
+        run: |
+          git fetch origin gh-pages || git checkout --orphan gh-pages
+          git reset --hard
+          git clean -fdx
+
       - name: Download Cypress Reports
         uses: actions/download-artifact@v4
         with:
-          name: cypress-reports-electron
+          name: cypress-reports-electron-${{ github.run_id }}
           path: report/electron
 
       - uses: actions/download-artifact@v4
         with:
-          name: cypress-reports-chrome
+          name: cypress-reports-chrome-${{ github.run_id }}
           path: report/chrome
 
       - uses: actions/download-artifact@v4
         with:
-          name: cypress-reports-firefox
+          name: cypress-reports-firefox-${{ github.run_id }}
           path: report/firefox
 
       - name: Criar um arquivo index.html para redirecionamento
@@ -86,7 +93,8 @@ jobs:
       - name: Publish Reports to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          personal_token: ${{ secrets.GH_PAGES_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}  
           publish_branch: gh-pages
           publish_dir: report
           force_orphan: true
+
