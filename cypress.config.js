@@ -1,9 +1,10 @@
-require('dotenv').config(); 
+const { defineConfig } = require('cypress');
+require('dotenv').config();
 
-module.exports = {
+module.exports = defineConfig({
   env: {
     baseApi: process.env.API_URL,
-    //projectId: process.env.PROJECT_ID, para reporte Tesults
+    projectId: process.env.PROJECT_ID,
   },
   e2e: {
     setupNodeEvents(on, config) {
@@ -14,9 +15,9 @@ module.exports = {
     viewportWidth: 1920,
     viewportHeight: 1080,
     video: true,
-    reporter: "cypress-multi-reporters",
+    reporter: 'cypress-multi-reporters',
     reporterOptions: {
-      configFile: "reporter-config.json"
-    },
-  },
-};
+      configFile: 'reporter-config.json'
+    }
+  }
+});
