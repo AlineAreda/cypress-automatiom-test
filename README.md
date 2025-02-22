@@ -94,8 +94,6 @@ Os testes são executados automaticamente via **GitHub Actions**, e os relatóri
 -   🔴 **Firefox:**  Ver Relatório
     
 
-Caso algum dos links retorne **404**, verifique a branch `gh-pages` no repositório para garantir que os arquivos foram publicados corretamente.
-
 ----------
 
 ## 🧪 Testes Implementados
